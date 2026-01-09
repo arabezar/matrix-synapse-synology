@@ -140,5 +140,5 @@ read -p "Создайте в Container Manager проект ${MATRIX_PRJ_NAME}, 
 [ -z "${MATRIX_ADMIN}" ] && MATRIX_ADMIN="admin"
 
 echo "Создание администратора Matrix..."
-docker exec -it matrix-synapse register_new_matrix_user https://${DOMAIN_BASE} -c /data/homeserver.yaml -u ${MATRIX_ADMIN} -a
+docker exec -it matrix-synapse register_new_matrix_user https://${DOMAIN_MATRIX} -c /data/homeserver.yaml -u ${MATRIX_ADMIN} -a
 echo "✅ Установка Matrix Synapse завершена"
