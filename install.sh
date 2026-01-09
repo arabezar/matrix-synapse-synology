@@ -110,7 +110,10 @@ else
     CONFIG_EXISTS=0 && [ -f "data/homeserver.yaml" ] && CONFIG_EXISTS=1
     docker run --rm -v ./data:/data -e SYNAPSE_CONFIG_PATH=/data/homeserver.yaml -e SYNAPSE_SERVER_NAME=${DOMAIN_BASE} -e SYNAPSE_REPORT_STATS=yes matrixdotorg/synapse:latest generate
     if [ -f "data/homeserver.yaml" ] && [ "${CONFIG_EXISTS}" -eq 0 ]; then
-        sed -i "/server_name: \"${DOMAIN_BASE}\"/a \enable_registration: false\nenable_registration_without_verification: true\nenable_group_creation: true" -e "/trusted_key_servers:/i \suppress_key_server_warning: true" data/homeserver.yaml
+        sed -i \
+            -e "/server_name: \"${DOMAIN_BASE}\"/a \enable_registration: false\nenable_registration_without_verification: true\nenable_group_creation: true" \
+            -e "/trusted_key_servers:/i \suppress_key_server_warning: true" \
+            data/homeserver.yaml
     fi
 fi
 
