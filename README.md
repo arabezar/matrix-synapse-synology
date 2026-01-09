@@ -70,7 +70,8 @@ Setting ownership on /data to 991:991
 Создание администратора Matrix...
 Enter Password:
 Confirm Password:
-INFO[0023] Created account: admin (AccessToken: EiUdFUY-ft8DtqdzDnfTDjV2bvVs8jSUI-DATa8Okjc)
+Sending registration request...
+Success!
 ✅ Установка Matrix Synapse завершена
 
 ```
@@ -151,5 +152,6 @@ testmatrix -u admin -t <token> exemple.com
 ## Вклад
 
 - Предложения и замечания категорически приветствуются [здесь](https://github.com/arabezar/matrix-synapse-synology/discussions)
+
 
 
