@@ -19,7 +19,7 @@ echo "Проверка необходимых условий..."
 read -p "Задайте папку проекта [${MATRIX_PRJ_NAME}] (Enter - подтвердить): " MATRIX_PRJ_NAME_NEW
 [ -n "${MATRIX_PRJ_NAME_NEW}" ] && MATRIX_PRJ_NAME="${MATRIX_PRJ_NAME_NEW}"
 [ -z "${MATRIX_PRJ_NAME}" ] && echo "❌ Не задана папка проекта Container Manager" && exit 252
-mkdir -p "${DOCKER_PATH}/${MATRIX_PRJ_NAME}/{db,data}"
+mkdir -p "${DOCKER_PATH}/${MATRIX_PRJ_NAME}/data"
 cd "${DOCKER_PATH}/${MATRIX_PRJ_NAME}"
 
 # Функция проверки наличия и установки значения параметров конфигурации
