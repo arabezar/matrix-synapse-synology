@@ -81,7 +81,7 @@ Success!
 Последующих пользователей можно создавать командой (пароль будет запрошен дважды после запуска команды, запускать из папки проекта `docker`):
 
 ```bash
-docker exec -it matrix-synapse register_new_matrix_user https://example.com -c /data/homeserver.yaml -u <user_name>
+docker exec -it matrix-synapse register_new_matrix_user https://matrix.example.com -c /data/homeserver.yaml -u <user_name>
 ```
 
 ### Нюансы развёртывания
@@ -152,6 +152,7 @@ testmatrix -u admin -t <token> exemple.com
 ## Вклад
 
 - Предложения и замечания категорически приветствуются [здесь](https://github.com/arabezar/matrix-synapse-synology/discussions)
+
 
 
 
