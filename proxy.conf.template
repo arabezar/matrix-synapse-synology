@@ -1,0 +1,72 @@
+server {
+    listen 80;
+    server_name ${DOMAIN_BASE} ${DOMAIN_MATRIX} ${DOMAIN_AUTH} ${DOMAIN_LIVEKIT};
+
+    # Discovery (.well-known) - Synapse его не отдает, поэтому отдаем сами.
+    location /.well-known/matrix/server {
+        default_type application/json;
+        add_header 'Access-Control-Allow-Origin' '*' always;
+        return 200 '{
+            "m.server": "${DOMAIN_MATRIX}:443"
+        }';
+    }
+
+    location /.well-known/matrix/client {
+        default_type application/json;
+        add_header 'Access-Control-Allow-Origin' '*' always;
+        # Важно: Element X требует preferred_backend на верхнем уровне
+        return 200 '{
+            "m.homeserver": {
+                "base_url": "https://${DOMAIN_MATRIX}"
+            },
+            "org.matrix.msc4143.rtc_foci": [
+                {
+                    "type": "livekit",
+                    "livekit_service_url": "https://${DOMAIN_AUTH}"
+                }
+            ],
+            "org.matrix.msc3401.matrix_rtc": {
+                "is_supported": true,
+                "livekit": {
+                    "preferred_url": "https://${DOMAIN_AUTH}"
+                }
+            }
+        }';
+    }
+
+    # Трафик Matrix API (Synapse)
+    location ~ ^(\/_matrix|\/_synapse\/client) {
+        proxy_pass http://matrix-synapse:8008;
+        proxy_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $http_connection;
+    }
+
+    # Трафик к Auth, Livekit и Continuwuity
+    location / {
+        proxy_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $http_connection;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+
+        # Перенаправляем по именам хостов
+        if ($host = "${DOMAIN_AUTH}") {
+            proxy_pass http://matrix-auth:8080;
+        }
+        if ($host = "${DOMAIN_LIVEKIT}") {
+            proxy_pass http://matrix-livekit:7880;
+        }
+
+        # Возврат на Synology DSM
+        if ($host = "${DOMAIN_BASE}") {
+            proxy_pass http://host.docker.internal;
+        }
+        
+        # Для всех других
+        proxy_pass http://matrix-synapse:8008;
+    }
+}
