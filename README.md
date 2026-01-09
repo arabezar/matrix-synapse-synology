@@ -1,4 +1,4 @@
-# Matrix Dendrite + LiveKit (HowTo)
+# Matrix Synapse + LiveKit (HowTo)
 
 Здесь описан процесс развертывания Matrix-сервера Synapse с поддержкой видеозвонков через LiveKit на Synology NAS (DSM 7) с использованием Container Manager (Docker).
 
@@ -150,3 +150,4 @@ testmatrix -u admin -t <token> exemple.com
 ## Вклад
 
 - Предложения и замечания категорически приветствуются [здесь](https://github.com/arabezar/matrix-synapse-synology/discussions)
+
